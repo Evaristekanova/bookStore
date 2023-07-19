@@ -4,7 +4,7 @@
  */
 
 
-
+import type { Context } from "./src/context/context"
 
 
 
@@ -34,6 +34,7 @@ export interface NexusGenObjects {
     image?: string | null; // String
     title?: string | null; // String
   }
+  Mutation: {};
   Query: {};
 }
 
@@ -54,6 +55,9 @@ export interface NexusGenFieldTypes {
     image: string | null; // String
     title: string | null; // String
   }
+  Mutation: { // field return type
+    createBook: NexusGenRootTypes['Book'] | null; // Book
+  }
   Query: { // field return type
     books: Array<NexusGenRootTypes['Book'] | null> | null; // [Book]
   }
@@ -66,12 +70,22 @@ export interface NexusGenFieldTypeNames {
     image: 'String'
     title: 'String'
   }
+  Mutation: { // field return type name
+    createBook: 'Book'
+  }
   Query: { // field return type name
     books: 'Book'
   }
 }
 
 export interface NexusGenArgTypes {
+  Mutation: {
+    createBook: { // args
+      author: string; // String!
+      image: string; // String!
+      title: string; // String!
+    }
+  }
 }
 
 export interface NexusGenAbstractTypeMembers {
@@ -105,7 +119,7 @@ export type NexusGenFeaturesConfig = {
 }
 
 export interface NexusGenTypes {
-  context: any;
+  context: Context;
   inputTypes: NexusGenInputs;
   rootTypes: NexusGenRootTypes;
   inputTypeShapes: NexusGenInputs & NexusGenEnums & NexusGenScalars;
