@@ -47,6 +47,7 @@ export interface NexusGenObjects {
     id?: number | null; // Int
     lastName?: string | null; // String
     password?: string | null; // String
+    role?: string | null; // String
   }
 }
 
@@ -92,6 +93,7 @@ export interface NexusGenFieldTypes {
     id: number | null; // Int
     lastName: string | null; // String
     password: string | null; // String
+    role: string | null; // String
   }
 }
 
@@ -127,6 +129,7 @@ export interface NexusGenFieldTypeNames {
     id: 'Int'
     lastName: 'String'
     password: 'String'
+    role: 'String'
   }
 }
 

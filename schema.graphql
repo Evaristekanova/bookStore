@@ -37,4 +37,5 @@ type User {
   id: Int
   lastName: String
   password: String
+  role: String
 }

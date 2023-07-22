@@ -6,6 +6,7 @@ const prisma = new PrismaClient();
 export interface Context {
   prisma: PrismaClient;
   userId?: number;
+  role?: string;
 }
 
 export const context = async ({ req }: any): Promise<Context> => {

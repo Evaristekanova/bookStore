@@ -44,8 +44,7 @@ export const AuthMutation = extendType({
             password: hashedPassword,
           },
         });
-        const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET as string);
-        console.log(token);
+        const token = jwt.sign({ userId: user.id, role:user.role }, process.env.APP_SECRET as string);
         return {
           token,
           user,
@@ -73,7 +72,7 @@ export const AuthMutation = extendType({
           throw new Error('Incorrect password');
         }
         // generate token
-        const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET as string);
+        const token = jwt.sign({ userId: user.id, role: user.role }, process.env.APP_SECRET as string);
         return {
           user,
           token,
@@ -84,7 +83,8 @@ export const AuthMutation = extendType({
 });
 
 export interface AuthTokenPayload {
-  userId: number;
+    userId: number;
+    role: string;
 }
 
 export const decodeToken = (token: string): AuthTokenPayload => {

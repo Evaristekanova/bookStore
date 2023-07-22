@@ -11,6 +11,7 @@ export const Users = objectType({
     t.string('firstName');
     t.string('lastName');
     t.string('email');
+    t.string('role');
     t.string('password');
   },
 });
