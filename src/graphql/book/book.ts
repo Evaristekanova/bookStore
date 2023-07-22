@@ -56,9 +56,10 @@ export const BookMutation = extendType({
         author: nonNull(stringArg()),
         image: nonNull(stringArg()),
       },
-      resolve: async (_: {}, { title, author, image }, { prisma }): Promise<Book> => {
+      resolve: async (_: {}, { title, author, image }, { prisma, userId }): Promise<Book> => {
         cloudinaryConfig;
         try {
+          if (!userId) throw new Error('You must be logged in to delete a book.');
           const uploadResponse = await cloudinary.v2.uploader.upload(image, {
             folder: 'bookStore',
           });
@@ -87,9 +88,10 @@ export const BookMutation = extendType({
         author: nonNull(stringArg()),
         image: nonNull(stringArg()),
       },
-      resolve: async (_: {}, { id, title, author, image }, { prisma }): Promise<Book> => {
+      resolve: async (_: {}, { id, title, author, image }, { prisma, userId }): Promise<Book> => {
         cloudinaryConfig;
         try {
+          if (!userId) throw new Error('You must be logged in to delete a book.');
           const book = await prisma.book.findUnique({
             where: { id },
           });
@@ -122,8 +124,9 @@ export const BookMutation = extendType({
       args: {
         id: nonNull(intArg()),
       },
-      resolve: async (_: {}, { id }, { prisma }): Promise<Book | null> => {
+      resolve: async (_: {}, { id }, { prisma, userId }): Promise<Book | null> => {
         try {
+          if (!userId) throw new Error('You must be logged in to delete a book.');
           const book = await prisma.book.findUnique({
             where: { id },
           });
