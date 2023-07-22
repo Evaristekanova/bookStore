@@ -4,6 +4,7 @@
 
 type Book {
   author: String
+  cloudinaryId: String
   id: Int
   image: String
   title: String
@@ -11,8 +12,11 @@ type Book {
 
 type Mutation {
   createBook(author: String!, image: String!, title: String!): Book
+  deleteBook(id: Int!): Book
+  updateBook(author: String!, id: Int!, image: String!, title: String!): Book
 }
 
 type Query {
   books: [Book]
+  oneBook(id: Int!): Book
 }

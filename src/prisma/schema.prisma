@@ -13,8 +13,9 @@ datasource db {
 model Book {
   id        Int      @id @default(autoincrement())
   title     String
-  author    String
+  author    String   @unique
   image     String
+  cloudinaryId String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
