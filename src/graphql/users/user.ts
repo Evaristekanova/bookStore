@@ -1,5 +1,4 @@
 import { objectType, extendType, nonNull, intArg, stringArg } from 'nexus';
-import * as jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { User } from '@prisma/client';
 dotenv.config();
