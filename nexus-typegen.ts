@@ -28,6 +28,10 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  AuthPayload: { // root type
+    token: string; // String!
+    user: NexusGenRootTypes['User']; // User!
+  }
   Book: { // root type
     author?: string | null; // String
     cloudinaryId?: string | null; // String
@@ -37,6 +41,13 @@ export interface NexusGenObjects {
   }
   Mutation: {};
   Query: {};
+  User: { // root type
+    email?: string | null; // String
+    firstName?: string | null; // String
+    id?: number | null; // Int
+    lastName?: string | null; // String
+    password?: string | null; // String
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -50,6 +61,10 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  AuthPayload: { // field return type
+    token: string; // String!
+    user: NexusGenRootTypes['User']; // User!
+  }
   Book: { // field return type
     author: string | null; // String
     cloudinaryId: string | null; // String
@@ -60,15 +75,31 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createBook: NexusGenRootTypes['Book'] | null; // Book
     deleteBook: NexusGenRootTypes['Book'] | null; // Book
+    login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
+    signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     updateBook: NexusGenRootTypes['Book'] | null; // Book
+    updateUser: NexusGenRootTypes['User']; // User!
   }
   Query: { // field return type
     books: Array<NexusGenRootTypes['Book'] | null> | null; // [Book]
     oneBook: NexusGenRootTypes['Book'] | null; // Book
+    oneUser: NexusGenRootTypes['User']; // User!
+    users: Array<NexusGenRootTypes['User'] | null>; // [User]!
+  }
+  User: { // field return type
+    email: string | null; // String
+    firstName: string | null; // String
+    id: number | null; // Int
+    lastName: string | null; // String
+    password: string | null; // String
   }
 }
 
 export interface NexusGenFieldTypeNames {
+  AuthPayload: { // field return type name
+    token: 'String'
+    user: 'User'
+  }
   Book: { // field return type name
     author: 'String'
     cloudinaryId: 'String'
@@ -79,11 +110,23 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     createBook: 'Book'
     deleteBook: 'Book'
+    login: 'AuthPayload'
+    signup: 'AuthPayload'
     updateBook: 'Book'
+    updateUser: 'User'
   }
   Query: { // field return type name
     books: 'Book'
     oneBook: 'Book'
+    oneUser: 'User'
+    users: 'User'
+  }
+  User: { // field return type name
+    email: 'String'
+    firstName: 'String'
+    id: 'Int'
+    lastName: 'String'
+    password: 'String'
   }
 }
 
@@ -97,15 +140,33 @@ export interface NexusGenArgTypes {
     deleteBook: { // args
       id: number; // Int!
     }
+    login: { // args
+      email: string; // String!
+      password: string; // String!
+    }
+    signup: { // args
+      email: string; // String!
+      firstName: string; // String!
+      lastName: string; // String!
+      password: string; // String!
+    }
     updateBook: { // args
       author: string; // String!
       id: number; // Int!
       image: string; // String!
       title: string; // String!
     }
+    updateUser: { // args
+      firstName: string; // String!
+      id: number; // Int!
+      lastName: string; // String!
+    }
   }
   Query: {
     oneBook: { // args
+      id: number; // Int!
+    }
+    oneUser: { // args
       id: number; // Int!
     }
   }

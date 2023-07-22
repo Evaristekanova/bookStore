@@ -1,15 +1,7 @@
 import { objectType, extendType, nonNull, stringArg, intArg } from 'nexus';
 import cloudinary from 'cloudinary';
-import cloudinaryConfig from '../cloudinary/config';
-import { Context } from '../context/context';
+import cloudinaryConfig from '../../cloudinary/config';
 import { Book } from '@prisma/client';
-
-interface BookArgs {
-  title: string;
-  author: string;
-  image: string;
-  cloudinaryId?: string;
-}
 
 export const Books = objectType({
   name: 'Book',
@@ -27,7 +19,7 @@ export const BookQuery = extendType({
   definition(t) {
     t.list.field('books', {
       type: 'Book',
-      resolve: async (_parent, _args, { prisma }: Context): Promise<Book[]> => {
+      resolve: async (_parent, _args, { prisma }): Promise<Book[]> => {
         return await prisma.book.findMany();
       },
     });
@@ -37,7 +29,7 @@ export const BookQuery = extendType({
       args: {
         id: nonNull(intArg()),
       },
-      resolve: async (_parent: {}, { id }: { id: number }, { prisma }): Promise<Book | null> => {
+      resolve: async (_parent: {}, { id }, { prisma }): Promise<Book | null> => {
         try {
           return await prisma.book.findUnique({
             where: {
@@ -64,11 +56,7 @@ export const BookMutation = extendType({
         author: nonNull(stringArg()),
         image: nonNull(stringArg()),
       },
-      resolve: async (
-        _: {},
-        { title, author, image }: BookArgs,
-        { prisma }: Context,
-      ): Promise<Book> => {
+      resolve: async (_: {}, { title, author, image }, { prisma }): Promise<Book> => {
         cloudinaryConfig;
         try {
           const uploadResponse = await cloudinary.v2.uploader.upload(image, {
@@ -99,7 +87,7 @@ export const BookMutation = extendType({
         author: nonNull(stringArg()),
         image: nonNull(stringArg()),
       },
-      resolve: async (_: {}, { id, title, author, image }, { prisma }: Context): Promise<Book> => {
+      resolve: async (_: {}, { id, title, author, image }, { prisma }): Promise<Book> => {
         cloudinaryConfig;
         try {
           const book = await prisma.book.findUnique({
@@ -134,7 +122,7 @@ export const BookMutation = extendType({
       args: {
         id: nonNull(intArg()),
       },
-      resolve: async (_: {}, { id }: { id: number }, { prisma }: Context): Promise<Book | null > => {
+      resolve: async (_: {}, { id }, { prisma }): Promise<Book | null> => {
         try {
           const book = await prisma.book.findUnique({
             where: { id },
