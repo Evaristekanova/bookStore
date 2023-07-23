@@ -42,7 +42,7 @@ export const AuthMutation = extendType({
             lastName,
             email,
             password: hashedPassword,
-            role,
+            role: role || 'user',
           },
         });
         const token = jwt.sign(

@@ -22,6 +22,7 @@ export const context = async ({ req }: any): Promise<Context> => {
     return {
       prisma,
       userId: user?.id,
+      role: user?.role,
     };
   }
   return {
