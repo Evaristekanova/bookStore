@@ -1,4 +1,4 @@
-import { extendType, nonNull, stringArg, objectType } from 'nexus';
+import { extendType, nonNull, stringArg, objectType, nullable } from 'nexus';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { User } from '@prisma/client';
@@ -28,10 +28,11 @@ export const AuthMutation = extendType({
         lastName: nonNull(stringArg()),
         email: nonNull(stringArg()),
         password: nonNull(stringArg()),
+        role: nullable(stringArg()),
       },
       resolve: async (
         _parent,
-        { firstName, lastName, email, password },
+        { firstName, lastName, email, password, role },
         { prisma },
       ): Promise<AuthPayload> => {
         const hashedPassword = await bcrypt.hash(password, 12);
@@ -41,9 +42,13 @@ export const AuthMutation = extendType({
             lastName,
             email,
             password: hashedPassword,
+            role,
           },
         });
-        const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET as string);
+        const token = jwt.sign(
+          { userId: user.id, role: user.role },
+          process.env.APP_SECRET as string,
+        );
         return {
           token,
           user,
@@ -71,7 +76,10 @@ export const AuthMutation = extendType({
           throw new Error('Incorrect password');
         }
         // generate token
-        const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET as string);
+        const token = jwt.sign(
+          { userId: user.id, role: user.role },
+          process.env.APP_SECRET as string,
+        );
         return {
           user,
           token,
