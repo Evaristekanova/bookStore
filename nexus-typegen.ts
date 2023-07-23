@@ -152,6 +152,7 @@ export interface NexusGenArgTypes {
       firstName: string; // String!
       lastName: string; // String!
       password: string; // String!
+      role?: string | null; // String
     }
     updateBook: { // args
       author: string; // String!

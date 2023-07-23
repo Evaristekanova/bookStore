@@ -19,7 +19,7 @@ type Mutation {
   createBook(author: String!, image: String!, title: String!): Book
   deleteBook(id: Int!): Book
   login(email: String!, password: String!): AuthPayload!
-  signup(email: String!, firstName: String!, lastName: String!, password: String!): AuthPayload!
+  signup(email: String!, firstName: String!, lastName: String!, password: String!, role: String): AuthPayload!
   updateBook(author: String!, id: Int!, image: String!, title: String!): Book
   updateUser(firstName: String!, id: Int!, lastName: String!): User!
 }
