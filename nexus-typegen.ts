@@ -49,6 +49,10 @@ export interface NexusGenObjects {
     password?: string | null; // String
     role?: string | null; // String
   }
+  category: { // root type
+    id: number; // Int!
+    name: string; // String!
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -75,6 +79,7 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     createBook: NexusGenRootTypes['Book'] | null; // Book
+    createCategory: NexusGenRootTypes['category']; // category!
     deleteBook: NexusGenRootTypes['Book'] | null; // Book
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
@@ -83,6 +88,8 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     books: Array<NexusGenRootTypes['Book'] | null> | null; // [Book]
+    categories: Array<NexusGenRootTypes['category'] | null> | null; // [category]
+    category: NexusGenRootTypes['category'] | null; // category
     oneBook: NexusGenRootTypes['Book'] | null; // Book
     oneUser: NexusGenRootTypes['User']; // User!
     users: Array<NexusGenRootTypes['User'] | null>; // [User]!
@@ -94,6 +101,10 @@ export interface NexusGenFieldTypes {
     lastName: string | null; // String
     password: string | null; // String
     role: string | null; // String
+  }
+  category: { // field return type
+    id: number; // Int!
+    name: string; // String!
   }
 }
 
@@ -111,6 +122,7 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     createBook: 'Book'
+    createCategory: 'category'
     deleteBook: 'Book'
     login: 'AuthPayload'
     signup: 'AuthPayload'
@@ -119,6 +131,8 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     books: 'Book'
+    categories: 'category'
+    category: 'category'
     oneBook: 'Book'
     oneUser: 'User'
     users: 'User'
@@ -131,6 +145,10 @@ export interface NexusGenFieldTypeNames {
     password: 'String'
     role: 'String'
   }
+  category: { // field return type name
+    id: 'Int'
+    name: 'String'
+  }
 }
 
 export interface NexusGenArgTypes {
@@ -139,6 +157,9 @@ export interface NexusGenArgTypes {
       author: string; // String!
       image: string; // String!
       title: string; // String!
+    }
+    createCategory: { // args
+      name: string; // String!
     }
     deleteBook: { // args
       id: number; // Int!
@@ -167,6 +188,9 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
+    category: { // args
+      id: number; // Int!
+    }
     oneBook: { // args
       id: number; // Int!
     }

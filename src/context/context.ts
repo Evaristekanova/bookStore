@@ -12,11 +12,12 @@ export interface Context {
 export const context = async ({ req }: any): Promise<Context> => {
   const authHeader = req.headers.authorization;
   if (authHeader) {
-    const token = authHeader.replace('Bearer ', '');
+    const token = authHeader.replace('Bearer ', '').trim();
+
     const decodedToken = decodeToken(token);
     const user = await prisma.user.findUnique({
       where: {
-        id: decodedToken.userId,
+        id: decodedToken?.userId,
       },
     });
     return {

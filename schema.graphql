@@ -17,6 +17,7 @@ type Book {
 
 type Mutation {
   createBook(author: String!, image: String!, title: String!): Book
+  createCategory(name: String!): category!
   deleteBook(id: Int!): Book
   login(email: String!, password: String!): AuthPayload!
   signup(email: String!, firstName: String!, lastName: String!, password: String!, role: String): AuthPayload!
@@ -26,6 +27,8 @@ type Mutation {
 
 type Query {
   books: [Book]
+  categories: [category]
+  category(id: Int!): category
   oneBook(id: Int!): Book
   oneUser(id: Int!): User!
   users: [User]!
@@ -38,4 +41,9 @@ type User {
   lastName: String
   password: String
   role: String
+}
+
+type category {
+  id: Int!
+  name: String!
 }

@@ -94,7 +94,14 @@ export interface AuthTokenPayload {
   role: string;
 }
 
-export const decodeToken = (token: string): AuthTokenPayload => {
-  const decoded = jwt.verify(token, process.env.APP_SECRET as string) as AuthTokenPayload;
-  return decoded;
+export const decodeToken = (token: string): AuthTokenPayload | null => {
+  try {
+    const decoded = jwt.verify(token, process.env.APP_SECRET as string,) as AuthTokenPayload;
+    console.log('decoded in auth', decoded);
+    
+    return decoded;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
 };
