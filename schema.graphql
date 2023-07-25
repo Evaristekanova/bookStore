@@ -19,17 +19,19 @@ type Mutation {
   createBook(author: String!, image: String!, title: String!): Book
   createCategory(name: String!): category!
   deleteBook(id: Int!): Book
+  deleteCategory(id: Int!): category!
   login(email: String!, password: String!): AuthPayload!
   signup(email: String!, firstName: String!, lastName: String!, password: String!, role: String): AuthPayload!
   updateBook(author: String!, id: Int!, image: String!, title: String!): Book
+  updateCategory(id: Int!, name: String!): category!
   updateUser(firstName: String!, id: Int!, lastName: String!): User!
 }
 
 type Query {
   books: [Book]
   categories: [category]
-  category(id: Int!): category
   oneBook(id: Int!): Book
+  oneCategory(id: Int!): category
   oneUser(id: Int!): User!
   users: [User]!
 }

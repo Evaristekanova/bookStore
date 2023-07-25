@@ -81,16 +81,18 @@ export interface NexusGenFieldTypes {
     createBook: NexusGenRootTypes['Book'] | null; // Book
     createCategory: NexusGenRootTypes['category']; // category!
     deleteBook: NexusGenRootTypes['Book'] | null; // Book
+    deleteCategory: NexusGenRootTypes['category']; // category!
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     updateBook: NexusGenRootTypes['Book'] | null; // Book
+    updateCategory: NexusGenRootTypes['category']; // category!
     updateUser: NexusGenRootTypes['User']; // User!
   }
   Query: { // field return type
     books: Array<NexusGenRootTypes['Book'] | null> | null; // [Book]
     categories: Array<NexusGenRootTypes['category'] | null> | null; // [category]
-    category: NexusGenRootTypes['category'] | null; // category
     oneBook: NexusGenRootTypes['Book'] | null; // Book
+    oneCategory: NexusGenRootTypes['category'] | null; // category
     oneUser: NexusGenRootTypes['User']; // User!
     users: Array<NexusGenRootTypes['User'] | null>; // [User]!
   }
@@ -124,16 +126,18 @@ export interface NexusGenFieldTypeNames {
     createBook: 'Book'
     createCategory: 'category'
     deleteBook: 'Book'
+    deleteCategory: 'category'
     login: 'AuthPayload'
     signup: 'AuthPayload'
     updateBook: 'Book'
+    updateCategory: 'category'
     updateUser: 'User'
   }
   Query: { // field return type name
     books: 'Book'
     categories: 'category'
-    category: 'category'
     oneBook: 'Book'
+    oneCategory: 'category'
     oneUser: 'User'
     users: 'User'
   }
@@ -164,6 +168,9 @@ export interface NexusGenArgTypes {
     deleteBook: { // args
       id: number; // Int!
     }
+    deleteCategory: { // args
+      id: number; // Int!
+    }
     login: { // args
       email: string; // String!
       password: string; // String!
@@ -181,6 +188,10 @@ export interface NexusGenArgTypes {
       image: string; // String!
       title: string; // String!
     }
+    updateCategory: { // args
+      id: number; // Int!
+      name: string; // String!
+    }
     updateUser: { // args
       firstName: string; // String!
       id: number; // Int!
@@ -188,10 +199,10 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
-    category: { // args
+    oneBook: { // args
       id: number; // Int!
     }
-    oneBook: { // args
+    oneCategory: { // args
       id: number; // Int!
     }
     oneUser: { // args

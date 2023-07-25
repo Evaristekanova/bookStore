@@ -19,7 +19,7 @@ export const CategoryQuery = extendType({
       },
     });
 
-    t.field('category', {
+    t.field('oneCategory', {
       type: 'category',
       args: {
         id: nonNull(intArg()),
@@ -49,38 +49,37 @@ export const CategoryMutation = extendType({
       },
     });
 
-    // t.nonNull.field('updateCategory', {
-    //   type: 'category',
-    //   args: {
-    //     id: nonNull(intArg()),
-    //     name: nonNull(stringArg()),
-    //   },
-    //   resolve: async (_parent, { id, name }, { prisma, userId, role }): Promise<bookCategory> => {
-    //     if (!userId && !role) throw new Error('You must be logged in to perform this action');
-    //     if (role && role !== 'admin')
-    //       throw new Error('You are not authorized to perform this action');
+    t.nonNull.field('updateCategory', {
+      type: 'category',
+      args: {
+        id: nonNull(intArg()),
+        name: nonNull(stringArg()),
+      },
+      resolve: async (_parent, { id, name }, { prisma, userId, role }): Promise<bookCategory> => {
+        if (!userId && !role) throw new Error('You must be logged in to perform this action');
+        if (role && role !== 'admin')
+          throw new Error('You are not authorized to perform this action');
 
-    //     const category = await prisma.bookCategory.findUnique({ where: { id } });
-    //     if (category) throw new Error(`Category with ID ${id} does not exist`);
-    //     const updatedCategory = await prisma.bookCategory.update({ where: { id }, data: { name } });
-    //     return updatedCategory;
-    //   },
-    // });
+        const category = await prisma.bookCategory.findUnique({ where: { id } });
+        if (!category) throw new Error(`Category with ID ${id} does not exist`);
+        return await prisma.bookCategory.update({ where: { id }, data: { name } });
+      },
+    });
 
-    // t.nonNull.field('deleteCategory', {
-    //   type: 'category',
-    //   args: {
-    //     id: nonNull(intArg()),
-    //   },
-    //   resolve: async (_parent, { id }, { prisma, userId, role }): Promise<bookCategory> => {
-    //     if (!userId && !role) throw new Error('You must be logged in to perform this action');
-    //     if (role && role !== 'admin')
-    //       throw new Error('You are not authorized to perform this action');
+    t.nonNull.field('deleteCategory', {
+      type: 'category',
+      args: {
+        id: nonNull(intArg()),
+      },
+      resolve: async (_parent, { id }, { prisma, userId, role }): Promise<bookCategory> => {
+        if (!userId && !role) throw new Error('You must be logged in to perform this action');
+        if (role && role !== 'admin')
+          throw new Error('You are not authorized to perform this action');
 
-    //     const category = await prisma.bookCategory.findUnique({ where: { id } });
-    //     if (!category) throw new Error(`Category with ID ${id} does not exist`);
-    //     return await prisma.bookCategory.delete({ where: { id } });
-    //   },
-    // });
+        const category = await prisma.bookCategory.findUnique({ where: { id } });
+        if (!category) throw new Error(`Category with ID ${id} does not exist`);
+        return await prisma.bookCategory.delete({ where: { id } });
+      },
+    });
   },
 });
