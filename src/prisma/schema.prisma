@@ -25,6 +25,8 @@ model Book {
   image     String
   cloudinaryId String?
   categoryId Int
+  createdBy Int
+  user      User     @relation(fields: [createdBy], references: [id])
   category  bookCategory @relation(fields: [categoryId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -39,6 +41,7 @@ model User {
   role     String   @default("user")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  books     Book[]
 }
 
 // model favoriteBook {

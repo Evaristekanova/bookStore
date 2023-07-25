@@ -1,4 +1,4 @@
-import { objectType, extendType, nonNull, stringArg, intArg } from 'nexus';
+import { objectType, extendType, nonNull, stringArg, intArg, nullable } from 'nexus';
 import cloudinary from 'cloudinary';
 import cloudinaryConfig from '../../cloudinary/config';
 import { Book } from '@prisma/client';
@@ -11,6 +11,7 @@ export const Books = objectType({
     t.string('author');
     t.string('image');
     t.string('cloudinaryId');
+    t.string('categoryId');
   },
 });
 
@@ -20,7 +21,12 @@ export const BookQuery = extendType({
     t.list.field('books', {
       type: 'Book',
       resolve: async (_parent, _args, { prisma }): Promise<Book[]> => {
-        return await prisma.book.findMany();
+        try {
+          return await prisma.book.findMany();
+        } catch (error) {
+          console.log(error);
+          throw new Error('Failed to fetch books.');
+        }
       },
     });
 
@@ -29,13 +35,9 @@ export const BookQuery = extendType({
       args: {
         id: nonNull(intArg()),
       },
-      resolve: async (_parent: {}, { id }, { prisma }): Promise<Book | null> => {
+      resolve: async (_parent, { id }, { prisma }): Promise<Book | null> => {
         try {
-          return await prisma.book.findUnique({
-            where: {
-              id,
-            },
-          });
+          return await prisma.book.findUnique({ where: { id: id } });
         } catch (error) {
           console.log(error);
           throw new Error('The book you are looking for does not exist.');
@@ -55,11 +57,19 @@ export const BookMutation = extendType({
         title: nonNull(stringArg()),
         author: nonNull(stringArg()),
         image: nonNull(stringArg()),
+        categoryId: nonNull(intArg()),
       },
-      resolve: async (_: {}, { title, author, image }, { prisma, userId }): Promise<Book> => {
+      resolve: async (
+        _,
+        { title, author, image, categoryId },
+        { prisma, userId, role },
+      ): Promise<Book> => {
         cloudinaryConfig;
         try {
-          if (!userId) throw new Error('You must be logged in to delete a book.');
+          if (!userId && !role) throw new Error('You must be logged in to perform this action');
+          if (role && role !== 'admin')
+            throw new Error('You are not authorized to perform this action');
+
           const uploadResponse = await cloudinary.v2.uploader.upload(image, {
             folder: 'bookStore',
           });
@@ -70,6 +80,8 @@ export const BookMutation = extendType({
               author,
               image: uploadResponse.secure_url,
               cloudinaryId: uploadResponse.public_id,
+              categoryId,
+              createdBy: userId as number,
             },
           });
         } catch (error) {
@@ -87,11 +99,15 @@ export const BookMutation = extendType({
         title: nonNull(stringArg()),
         author: nonNull(stringArg()),
         image: nonNull(stringArg()),
+        categoryId: nonNull(intArg()),
       },
-      resolve: async (_: {}, { id, title, author, image }, { prisma, userId }): Promise<Book> => {
+      resolve: async (_, { id, title, author, image }, { prisma, userId, role }): Promise<Book> => {
         cloudinaryConfig;
         try {
-          if (!userId) throw new Error('You must be logged in to delete a book.');
+          if (!userId && !role) throw new Error('You must be logged in to perform this action');
+          if (role && role !== 'admin')
+            throw new Error('You are not authorized to perform this action');
+
           const book = await prisma.book.findUnique({
             where: { id },
           });
@@ -101,7 +117,10 @@ export const BookMutation = extendType({
           const uploadResponse = await cloudinary.v2.uploader.upload(image, {
             folder: 'bookStore',
           });
-
+          if (book.createdBy !== userId)
+            throw new Error(
+              'You are not allow to perform this action, you are not the owner of this book.',
+            );
           return await prisma.book.update({
             where: { id },
             data: {
@@ -124,9 +143,11 @@ export const BookMutation = extendType({
       args: {
         id: nonNull(intArg()),
       },
-      resolve: async (_: {}, { id }, { prisma, userId }): Promise<Book | null> => {
+      resolve: async (_, { id }, { prisma, userId, role }): Promise<Book | null> => {
         try {
-          if (!userId) throw new Error('You must be logged in to delete a book.');
+          if (!userId && !role) throw new Error('You must be logged in to perform this action');
+          if (role && role !== 'admin')
+            throw new Error('You are not authorized to perform this action');
           const book = await prisma.book.findUnique({
             where: { id },
           });

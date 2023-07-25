@@ -34,6 +34,7 @@ export interface NexusGenObjects {
   }
   Book: { // root type
     author?: string | null; // String
+    categoryId?: string | null; // String
     cloudinaryId?: string | null; // String
     id?: number | null; // Int
     image?: string | null; // String
@@ -72,6 +73,7 @@ export interface NexusGenFieldTypes {
   }
   Book: { // field return type
     author: string | null; // String
+    categoryId: string | null; // String
     cloudinaryId: string | null; // String
     id: number | null; // Int
     image: string | null; // String
@@ -117,6 +119,7 @@ export interface NexusGenFieldTypeNames {
   }
   Book: { // field return type name
     author: 'String'
+    categoryId: 'String'
     cloudinaryId: 'String'
     id: 'Int'
     image: 'String'
@@ -159,6 +162,7 @@ export interface NexusGenArgTypes {
   Mutation: {
     createBook: { // args
       author: string; // String!
+      categoryId: number; // Int!
       image: string; // String!
       title: string; // String!
     }
@@ -184,6 +188,7 @@ export interface NexusGenArgTypes {
     }
     updateBook: { // args
       author: string; // String!
+      categoryId: number; // Int!
       id: number; // Int!
       image: string; // String!
       title: string; // String!

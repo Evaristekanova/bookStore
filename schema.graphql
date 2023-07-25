@@ -9,6 +9,7 @@ type AuthPayload {
 
 type Book {
   author: String
+  categoryId: String
   cloudinaryId: String
   id: Int
   image: String
@@ -16,13 +17,13 @@ type Book {
 }
 
 type Mutation {
-  createBook(author: String!, image: String!, title: String!): Book
+  createBook(author: String!, categoryId: Int!, image: String!, title: String!): Book
   createCategory(name: String!): category!
   deleteBook(id: Int!): Book
   deleteCategory(id: Int!): category!
   login(email: String!, password: String!): AuthPayload!
   signup(email: String!, firstName: String!, lastName: String!, password: String!, role: String): AuthPayload!
-  updateBook(author: String!, id: Int!, image: String!, title: String!): Book
+  updateBook(author: String!, categoryId: Int!, id: Int!, image: String!, title: String!): Book
   updateCategory(id: Int!, name: String!): category!
   updateUser(firstName: String!, id: Int!, lastName: String!): User!
 }
