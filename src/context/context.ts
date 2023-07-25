@@ -12,7 +12,7 @@ export interface Context {
 export const context = async ({ req }: any): Promise<Context> => {
   const authHeader = req.headers.authorization;
   if (authHeader) {
-    const token = authHeader.replace('Bearer ', '').trim();
+    const token = authHeader.replace('Bearer', '').trim();
 
     const decodedToken = decodeToken(token);
     const user = await prisma.user.findUnique({
@@ -20,6 +20,7 @@ export const context = async ({ req }: any): Promise<Context> => {
         id: decodedToken?.userId,
       },
     });
+    if (!user) throw new Error('User not found');
     return {
       prisma,
       userId: user?.id,

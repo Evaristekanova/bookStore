@@ -96,12 +96,14 @@ export interface AuthTokenPayload {
 
 export const decodeToken = (token: string): AuthTokenPayload | null => {
   try {
-    const decoded = jwt.verify(token, process.env.APP_SECRET as string,) as AuthTokenPayload;
-    console.log('decoded in auth', decoded);
-    
-    return decoded;
+    const decodedToken = jwt.verify(token, process.env.APP_SECRET as string) as AuthTokenPayload;
+    if (!decodedToken) {
+      throw new Error('No token found');
+    }
+    return decodedToken;
   } catch (error) {
     console.log(error);
+    
     return null;
   }
 };
