@@ -16,11 +16,19 @@ type Book {
   title: String
 }
 
+type Favorite {
+  bookId: Int
+  id: Int
+  userId: Int
+}
+
 type Mutation {
   createBook(author: String!, categoryId: Int!, image: String!, title: String!): Book
   createCategory(name: String!): category!
+  createFavorite(bookId: Int!): Favorite!
   deleteBook(id: Int!): Book
   deleteCategory(id: Int!): category!
+  deleteFavorite(id: Int!): Favorite!
   login(email: String!, password: String!): AuthPayload!
   signup(email: String!, firstName: String!, lastName: String!, password: String!, role: String): AuthPayload!
   updateBook(author: String!, categoryId: Int!, id: Int!, image: String!, title: String!): Book
@@ -31,8 +39,10 @@ type Mutation {
 type Query {
   books: [Book]
   categories: [category]
+  favorites: [Favorite]!
   oneBook(id: Int!): Book
   oneCategory(id: Int!): category
+  oneFavorite(id: Int!): Favorite!
   oneUser(id: Int!): User!
   users: [User]!
 }

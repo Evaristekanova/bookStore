@@ -40,6 +40,11 @@ export interface NexusGenObjects {
     image?: string | null; // String
     title?: string | null; // String
   }
+  Favorite: { // root type
+    bookId?: number | null; // Int
+    id?: number | null; // Int
+    userId?: number | null; // Int
+  }
   Mutation: {};
   Query: {};
   User: { // root type
@@ -79,11 +84,18 @@ export interface NexusGenFieldTypes {
     image: string | null; // String
     title: string | null; // String
   }
+  Favorite: { // field return type
+    bookId: number | null; // Int
+    id: number | null; // Int
+    userId: number | null; // Int
+  }
   Mutation: { // field return type
     createBook: NexusGenRootTypes['Book'] | null; // Book
     createCategory: NexusGenRootTypes['category']; // category!
+    createFavorite: NexusGenRootTypes['Favorite']; // Favorite!
     deleteBook: NexusGenRootTypes['Book'] | null; // Book
     deleteCategory: NexusGenRootTypes['category']; // category!
+    deleteFavorite: NexusGenRootTypes['Favorite']; // Favorite!
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     updateBook: NexusGenRootTypes['Book'] | null; // Book
@@ -93,8 +105,10 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     books: Array<NexusGenRootTypes['Book'] | null> | null; // [Book]
     categories: Array<NexusGenRootTypes['category'] | null> | null; // [category]
+    favorites: Array<NexusGenRootTypes['Favorite'] | null>; // [Favorite]!
     oneBook: NexusGenRootTypes['Book'] | null; // Book
     oneCategory: NexusGenRootTypes['category'] | null; // category
+    oneFavorite: NexusGenRootTypes['Favorite']; // Favorite!
     oneUser: NexusGenRootTypes['User']; // User!
     users: Array<NexusGenRootTypes['User'] | null>; // [User]!
   }
@@ -125,11 +139,18 @@ export interface NexusGenFieldTypeNames {
     image: 'String'
     title: 'String'
   }
+  Favorite: { // field return type name
+    bookId: 'Int'
+    id: 'Int'
+    userId: 'Int'
+  }
   Mutation: { // field return type name
     createBook: 'Book'
     createCategory: 'category'
+    createFavorite: 'Favorite'
     deleteBook: 'Book'
     deleteCategory: 'category'
+    deleteFavorite: 'Favorite'
     login: 'AuthPayload'
     signup: 'AuthPayload'
     updateBook: 'Book'
@@ -139,8 +160,10 @@ export interface NexusGenFieldTypeNames {
   Query: { // field return type name
     books: 'Book'
     categories: 'category'
+    favorites: 'Favorite'
     oneBook: 'Book'
     oneCategory: 'category'
+    oneFavorite: 'Favorite'
     oneUser: 'User'
     users: 'User'
   }
@@ -169,10 +192,16 @@ export interface NexusGenArgTypes {
     createCategory: { // args
       name: string; // String!
     }
+    createFavorite: { // args
+      bookId: number; // Int!
+    }
     deleteBook: { // args
       id: number; // Int!
     }
     deleteCategory: { // args
+      id: number; // Int!
+    }
+    deleteFavorite: { // args
       id: number; // Int!
     }
     login: { // args
@@ -208,6 +237,9 @@ export interface NexusGenArgTypes {
       id: number; // Int!
     }
     oneCategory: { // args
+      id: number; // Int!
+    }
+    oneFavorite: { // args
       id: number; // Int!
     }
     oneUser: { // args

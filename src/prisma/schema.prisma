@@ -30,6 +30,7 @@ model Book {
   category  bookCategory @relation(fields: [categoryId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  favorites Favorite[]
 }
 
 model User {
@@ -42,12 +43,15 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   books     Book[]
+  favorites Favorite[]
 }
 
-// model favoriteBook {
-//   id        Int      @id @default(autoincrement())
-//   bookId    Int
-//   userId    Int
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-// }
+model Favorite {
+  id        Int      @id @default(autoincrement())
+  bookId    Int
+  userId    Int
+  book      Book     @relation(fields: [bookId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
