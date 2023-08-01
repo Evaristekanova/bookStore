@@ -25,7 +25,7 @@ export const FavoriteQuery = extendType({
       args: {
         id: nonNull(intArg()),
       },
-      resolve: async (_parent, { id }, { prisma }): Promise<Favorite | null> => {
+      resolve: async (_parent, { id }, { prisma }):Promise<any> => {
         return await prisma.favorite.findUnique({ where: { id: id } });
       },
     });

@@ -1,4 +1,4 @@
-import { objectType, extendType, nonNull, stringArg, intArg, nullable } from 'nexus';
+import { objectType, extendType, nonNull, stringArg, intArg } from 'nexus';
 import cloudinary from 'cloudinary';
 import cloudinaryConfig from '../../cloudinary/config';
 import { Book } from '@prisma/client';
@@ -20,7 +20,7 @@ export const BookQuery = extendType({
   definition(t) {
     t.list.field('books', {
       type: 'Book',
-      resolve: async (_parent, _args, { prisma }): Promise<Book[]> => {
+      resolve: async (_parent, _args, { prisma }): Promise<any> => {
         try {
           return await prisma.book.findMany();
         } catch (error) {
@@ -35,7 +35,7 @@ export const BookQuery = extendType({
       args: {
         id: nonNull(intArg()),
       },
-      resolve: async (_parent, { id }, { prisma }): Promise<Book | null> => {
+      resolve: async (_parent, { id }, { prisma }): Promise<any> => {
         try {
           return await prisma.book.findUnique({ where: { id: id } });
         } catch (error) {
@@ -63,7 +63,7 @@ export const BookMutation = extendType({
         _,
         { title, author, image, categoryId },
         { prisma, userId, role },
-      ): Promise<Book> => {
+      ): Promise<any> => {
         cloudinaryConfig;
         try {
           if (!userId && !role) throw new Error('You must be logged in to perform this action');
@@ -101,7 +101,7 @@ export const BookMutation = extendType({
         image: nonNull(stringArg()),
         categoryId: nonNull(intArg()),
       },
-      resolve: async (_, { id, title, author, image }, { prisma, userId, role }): Promise<Book> => {
+      resolve: async (_, { id, title, author, image }, { prisma, userId, role }): Promise<any> => {
         cloudinaryConfig;
         try {
           if (!userId && !role) throw new Error('You must be logged in to perform this action');
@@ -143,7 +143,7 @@ export const BookMutation = extendType({
       args: {
         id: nonNull(intArg()),
       },
-      resolve: async (_, { id }, { prisma, userId, role }): Promise<Book | null> => {
+      resolve: async (_, { id }, { prisma, userId, role }): Promise<any> => {
         try {
           if (!userId && !role) throw new Error('You must be logged in to perform this action');
           if (role && role !== 'admin')
