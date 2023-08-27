@@ -20,9 +20,10 @@ model bookCategory {
 
 model Book {
   id        Int      @id @default(autoincrement())
-  title     String
-  author    String   @unique
+  title     String   @unique
+  author    String   
   image     String
+  description String
   cloudinaryId String?
   categoryId Int
   createdBy Int

@@ -1,7 +1,6 @@
 import { objectType, extendType, nonNull, stringArg, intArg } from 'nexus';
 import cloudinary from 'cloudinary';
 import cloudinaryConfig from '../../cloudinary/config';
-import { Book } from '@prisma/client';
 
 export const Books = objectType({
   name: 'Book',
@@ -10,6 +9,7 @@ export const Books = objectType({
     t.string('title');
     t.string('author');
     t.string('image');
+    t.string('description');
     t.string('cloudinaryId');
     t.string('categoryId');
   },
@@ -57,11 +57,12 @@ export const BookMutation = extendType({
         title: nonNull(stringArg()),
         author: nonNull(stringArg()),
         image: nonNull(stringArg()),
+        description: nonNull(stringArg()),
         categoryId: nonNull(intArg()),
       },
       resolve: async (
         _,
-        { title, author, image, categoryId },
+        { title, author, image, categoryId, description },
         { prisma, userId, role },
       ): Promise<any> => {
         cloudinaryConfig;
@@ -78,6 +79,7 @@ export const BookMutation = extendType({
             data: {
               title,
               author,
+              description,
               image: uploadResponse.secure_url,
               cloudinaryId: uploadResponse.public_id,
               categoryId,
@@ -98,10 +100,15 @@ export const BookMutation = extendType({
         id: nonNull(intArg()),
         title: nonNull(stringArg()),
         author: nonNull(stringArg()),
+        description: nonNull(stringArg()),
         image: nonNull(stringArg()),
         categoryId: nonNull(intArg()),
       },
-      resolve: async (_, { id, title, author, image }, { prisma, userId, role }): Promise<any> => {
+      resolve: async (
+        _,
+        { id, title, author, image, description },
+        { prisma, userId, role },
+      ): Promise<any> => {
         cloudinaryConfig;
         try {
           if (!userId && !role) throw new Error('You must be logged in to perform this action');
@@ -126,6 +133,7 @@ export const BookMutation = extendType({
             data: {
               title,
               author,
+              description,
               image: uploadResponse.secure_url,
               cloudinaryId: uploadResponse.public_id,
             },
