@@ -9,8 +9,11 @@ type AuthPayload {
 
 type Book {
   author: String
+  bookCloudinaryId: String
+  bookFile: String
   categoryId: String
   cloudinaryId: String
+  description: String
   id: Int
   image: String
   title: String
@@ -23,7 +26,7 @@ type Favorite {
 }
 
 type Mutation {
-  createBook(author: String!, categoryId: Int!, image: String!, title: String!): Book
+  createBook(author: String!, bookFile: String!, categoryId: Int!, description: String!, image: String!, title: String!): Book
   createCategory(name: String!): category!
   createFavorite(bookId: Int!): Favorite!
   deleteBook(id: Int!): Book
@@ -31,7 +34,7 @@ type Mutation {
   deleteFavorite(id: Int!): Favorite!
   login(email: String!, password: String!): AuthPayload!
   signup(email: String!, firstName: String!, lastName: String!, password: String!, role: String): AuthPayload!
-  updateBook(author: String!, categoryId: Int!, id: Int!, image: String!, title: String!): Book
+  updateBook(author: String!, bookFile: String!, categoryId: Int!, description: String!, id: Int!, image: String!, title: String!): Book
   updateCategory(id: Int!, name: String!): category!
   updateUser(firstName: String!, id: Int!, lastName: String!): User!
 }

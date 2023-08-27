@@ -24,6 +24,8 @@ model Book {
   author    String   
   image     String
   description String
+  bookFile  String
+  bookCloudinaryId String?
   cloudinaryId String?
   categoryId Int
   createdBy Int

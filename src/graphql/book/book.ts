@@ -9,6 +9,8 @@ export const Books = objectType({
     t.string('title');
     t.string('author');
     t.string('image');
+    t.string('bookFile');
+    t.string('bookCloudinaryId');
     t.string('description');
     t.string('cloudinaryId');
     t.string('categoryId');
@@ -57,12 +59,13 @@ export const BookMutation = extendType({
         title: nonNull(stringArg()),
         author: nonNull(stringArg()),
         image: nonNull(stringArg()),
+        bookFile: nonNull(stringArg()),
         description: nonNull(stringArg()),
         categoryId: nonNull(intArg()),
       },
       resolve: async (
         _,
-        { title, author, image, categoryId, description },
+        { title, author, image, categoryId, description, bookFile },
         { prisma, userId, role },
       ): Promise<any> => {
         cloudinaryConfig;
@@ -71,8 +74,12 @@ export const BookMutation = extendType({
           if (role && role !== 'admin')
             throw new Error('You are not authorized to perform this action');
 
-          const uploadResponse = await cloudinary.v2.uploader.upload(image, {
-            folder: 'bookStore',
+          const uploadimageResponse = await cloudinary.v2.uploader.upload(image, {
+            folder: 'bookImageStore',
+          });
+
+          const uploadBookFileResponse = await cloudinary.v2.uploader.upload(bookFile, {
+            folder: 'bookFileStore',
           });
 
           return await prisma.book.create({
@@ -80,9 +87,11 @@ export const BookMutation = extendType({
               title,
               author,
               description,
-              image: uploadResponse.secure_url,
-              cloudinaryId: uploadResponse.public_id,
               categoryId,
+              bookFile: uploadBookFileResponse.secure_url,
+              image: uploadimageResponse.secure_url,
+              cloudinaryId: uploadimageResponse.public_id,
+              bookCloudinaryId: uploadBookFileResponse.public_id,
               createdBy: userId as number,
             },
           });
@@ -102,11 +111,12 @@ export const BookMutation = extendType({
         author: nonNull(stringArg()),
         description: nonNull(stringArg()),
         image: nonNull(stringArg()),
+        bookFile: nonNull(stringArg()),
         categoryId: nonNull(intArg()),
       },
       resolve: async (
         _,
-        { id, title, author, image, description },
+        { id, title, author, image, description, bookFile },
         { prisma, userId, role },
       ): Promise<any> => {
         cloudinaryConfig;
@@ -121,9 +131,14 @@ export const BookMutation = extendType({
           if (!book) throw new Error('Book not found!');
 
           await cloudinary.v2.uploader.destroy(book?.cloudinaryId as string);
-          const uploadResponse = await cloudinary.v2.uploader.upload(image, {
+          await cloudinary.v2.uploader.destroy(book?.bookCloudinaryId as string);
+          const uploadimageResponse = await cloudinary.v2.uploader.upload(image, {
             folder: 'bookStore',
           });
+          const uploadBookFileResponse = await cloudinary.v2.uploader.upload(bookFile, {
+            folder: 'bookFileStore',
+          });
+
           if (book.createdBy !== userId)
             throw new Error(
               'You are not allow to perform this action, you are not the owner of this book.',
@@ -134,8 +149,10 @@ export const BookMutation = extendType({
               title,
               author,
               description,
-              image: uploadResponse.secure_url,
-              cloudinaryId: uploadResponse.public_id,
+              bookFile: uploadBookFileResponse.secure_url,
+              image: uploadimageResponse.secure_url,
+              cloudinaryId: uploadimageResponse.public_id,
+              bookCloudinaryId: uploadBookFileResponse.public_id,
             },
           });
         } catch (error) {
